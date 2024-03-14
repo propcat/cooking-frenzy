@@ -1,0 +1,13 @@
+export type WorkstationCounter =
+  | 'counter_corner'
+  | 'counter_doors'
+  | 'counter_drawers'
+  | 'counter_end'
+  | 'counter_sink'
+  | 'counter_straight'
+  | 'space_counter_corner'
+  | 'space_counter_doors'
+  | 'space_counter_drawers'
+  | 'space_counter_end'
+  | 'space_counter_sink'
+  | 'space_counter_straight'

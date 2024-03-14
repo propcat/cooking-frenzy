@@ -1,0 +1,53 @@
+{
+  "name": "cooking-frenzy",
+  "author": {
+    "name": "propcat",
+    "url": "https://github.com/propcat"
+  },
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "license": "MIT",
+  "scripts": {
+    "start": "npm run dev",
+    "dev": "vite --port 3000 --host --open",
+    "typecheck": "tsc --noEmit",
+    "build": "tsc && vite build",
+    "upload:draft": "npm run build && rune upload ./dist --draft --name \"Cooking Frenzy\"",
+    "preview": "vite preview --port 3000 --host --open"
+  },
+  "dependencies": {
+    "@fontsource-variable/roboto-mono": "^5.0.17",
+    "@fontsource-variable/rubik": "^5.0.21",
+    "@react-three/drei": "^9.13.2",
+    "@react-three/fiber": "^8.2.2",
+    "@use-gesture/react": "^10.3.0",
+    "framer-motion": "^10.16.16",
+    "howler": "^2.2.4",
+    "nanoid": "^5.0.6",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-icons": "^4.12.0",
+    "react-joystick-component": "^6.2.1",
+    "react-spinners": "^0.13.8",
+    "rotate-vector-about-axis": "^1.0.2",
+    "rune-games-sdk": "^4.16.33",
+    "styled-components": "^6.1.3",
+    "three": "^0.143.0",
+    "zustand": "^4.4.7"
+  },
+  "devDependencies": {
+    "@types/howler": "^2.2.11",
+    "@types/node": "^20.11.5",
+    "@types/react": "^18.0.28",
+    "@types/react-dom": "^18.0.11",
+    "@types/three": "^0.143.0",
+    "@vitejs/plugin-react": "^4.0.0",
+    "gltfjsx": "^6.2.16",
+    "typescript": "^5.0.2",
+    "vite": "^4.3.2",
+    "vite-plugin-qrcode": "^0.2.2",
+    "vite-plugin-rune": "^0.2.0",
+    "vite-tsconfig-paths": "^4.3.1"
+  }
+}

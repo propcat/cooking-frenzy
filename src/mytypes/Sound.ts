@@ -1,0 +1,1 @@
+export type Sound = 'pick' | 'put' | 'fridge_toggle';
