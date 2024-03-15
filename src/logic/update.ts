@@ -133,22 +133,28 @@ export const update: InitLogicUpdate<GameState> = ({ allPlayerIds, game }) => {
   }
 
   if(!lastOrder || Rune.gameTime() - lastOrder.start >= orderMinInterval * 1000) {
+    const firstOrderCompleted = game.completedOrders.completed >= 1;
+
     if(ordersToCreate > 0 && game.orders.length < maxOrders) {
       const newOrders: Order[] = [];
 
       for(let i = 0; i < ordersToCreate; i++) {
         if(game.orders.length + newOrders.length >= maxOrders) break;
         
+        const isFirstOrderToBeCompleted = i === 0 && game.orders.length === 0 && game.completedOrders.completed === 0;
+
+        if(!isFirstOrderToBeCompleted && !firstOrderCompleted) break;
+        
         let randomFoodIndex: number;
 
         do {
           randomFoodIndex = Math.floor(Math.random() * Foods.length);
-        } while(game.orders.find(order => order.food === Foods[randomFoodIndex]) || newOrders.find(order => order.food === Foods[randomFoodIndex]) || (game.completedOrders.total < 3 && GameData.recipes.find(recipe => recipe.result === Foods[randomFoodIndex])?.ingredients.find(ingredient => ProcessedIngredients.find(i => i === ingredient))));
+        } while(game.orders.find(order => order.food === Foods[randomFoodIndex]) || newOrders.find(order => order.food === Foods[randomFoodIndex]) || (game.completedOrders.completed < 3 && GameData.recipes.find(recipe => recipe.result === Foods[randomFoodIndex])?.ingredients.find(ingredient => ProcessedIngredients.find(i => i === ingredient))));
 
         newOrders.push({
           food: Foods[randomFoodIndex],
           start: Rune.gameTime(),
-          time: orderTime * 1000,
+          time: (isFirstOrderToBeCompleted ? orderTime * 3 : orderTime) * 1000,
         })
       }
 
