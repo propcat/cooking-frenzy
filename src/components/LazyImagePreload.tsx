@@ -3,6 +3,7 @@ import { BaseIngredients, ProcessedIngredients } from '@mytypes/Ingredient'
 import { Foods } from '@/mytypes/Food'
 import { Workstations } from '@mytypes/Workstation';
 import { Utensils } from '@mytypes/Utensil';
+import { useClientStore } from '@stores/ClientStore';
 
 /*
   This component is called lazy because the way I "preload" these images is VERY lazy.
@@ -10,8 +11,22 @@ import { Utensils } from '@mytypes/Utensil';
 */
 
 export function LazyImagePreload() {
+  const players = useClientStore(state => state.client?.players);
+
   return (
     <>
+      <Image src='posters/tutorial_1.jpg'/>
+      <Image src='posters/tutorial_2.jpg'/>
+      <Image src='posters/tutorial_3.jpg'/>
+      <Image src='posters/tutorial_4.jpg'/>
+      <Image src='posters/tutorial_5.jpg'/>
+      <Image src='posters/tutorial_6.jpg'/>
+      <Image src='posters/tutorial_7.jpg'/>
+
+      {players && Object.keys(players).map(playerId => (
+        <Image key={playerId} src={players[playerId].avatarUrl}/>
+      ))}
+
       <Image src='logo.svg'/>
 
       {BaseIngredients.map(ingredient => (
