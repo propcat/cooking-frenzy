@@ -4,6 +4,14 @@ import styled from 'styled-components'
 import { IngameMenu } from './IngameMenu';
 import { useEffect, useState } from 'react';
 import { GameData } from '@gamedata';
+import { PiQuestion, PiQuestionBold } from 'react-icons/pi';
+import { FaQuestion } from 'react-icons/fa';
+import { MdOutlineQuestionMark, MdQuestionMark } from 'react-icons/md';
+import { BsQuestionCircleFill } from "react-icons/bs";
+import { CiCircleQuestion } from "react-icons/ci";
+import { BsPatchQuestionFill } from "react-icons/bs";
+import { Tutorial } from './Tutorial';
+import { TutorialPopup } from './TutorialPopup';
 
 interface Props {
   loaded?: boolean,
@@ -26,24 +34,28 @@ export function TopLayout({ loaded }: Props) {
     }
   }
 
-  const [menuOpen, setMenuOpen] = useState(false);
+  const [tutorialOpen, setTutorialOpen] = useState(false);
 
-  function onMenuToggle() {
-    setMenuOpen(open => {
+  useEffect(() => {
+    setTutorialOpen(false);
+  }, [status, level])
+
+  function onTutorialToggle() {
+    setTutorialOpen(open => {
       if(open || status !== 'game' || !level?.loaded) return false;
 
       return true;
     })
   }
 
-  const onMenuClose = () => setMenuOpen(false);
+  const onTutorialClose = () => setTutorialOpen(false);
 
   return (
     <Container>
-      <Content onTouchEnd={onMenuToggle}>
+      <Content onTouchEnd={onTutorialToggle}>
         {loaded && (
           <IconButton transparent={status !== 'game' || !level?.loaded}>
-            <LuMenu/>
+            <MdQuestionMark/>
           </IconButton>
         )}
 
@@ -62,9 +74,7 @@ export function TopLayout({ loaded }: Props) {
         )}
       </Content>
 
-      <RelativeContainer>
-        <IngameMenu open={menuOpen} onClose={onMenuClose}/>
-      </RelativeContainer>
+      <TutorialPopup open={tutorialOpen} onClose={onTutorialClose}/>
     </Container>
   )
 }
@@ -97,11 +107,6 @@ const Content = styled.div`
     font-family: 'Roboto Mono Variable', sans-serif !important;
     font-size: 0.875em;
   }
-`
-
-const RelativeContainer = styled.div`
-  position: relative;
-  width: 100%;
 `
 
 const Info = styled.div<{ transparent?: boolean }>`
