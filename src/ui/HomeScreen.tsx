@@ -51,9 +51,7 @@ const Difficulties: {[key in Difficulty]: { name: string, stars: 1 | 2 | 3 | 4, 
 }
 
 export function HomeScreen() {
-  const players = useClientStore(state => state.client?.players);
   const clientDifficulty = useClientStore(state => state.client?.game.difficulty);
-  const [open, setOpen] = useState(false);
 
   const difficulty = useMemo(() => clientDifficulty ?? 'easy', [clientDifficulty]);
 
@@ -76,11 +74,6 @@ export function HomeScreen() {
   function onPlayClick() {
     playSound('put', undefined, 2);
 
-    if(!open) {
-      setOpen(true);
-      return;
-    }
-
     Rune.actions.startGame();
   }
 
@@ -89,59 +82,42 @@ export function HomeScreen() {
   return (
     <ScreenContainer>
       <AnimatePresence>
-        {open || (
-          <Logo
-            key='logo'
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.9 }}
-            transition={{ duration: 0.125 }}
-            src='logo.svg'
-          />
-        )}
-
-        { open || <Spacer/> }
-
-        {open && (
-          <Tutorial
-            key='tutorial'
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.125, delay: 0.25 }}
-          >
-            <TutorialContent/>
-          </Tutorial>
-        )}
+        <Tutorial
+          key='tutorial'
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.125, delay: 0.25 }}
+        >
+          <TutorialContent/>
+        </Tutorial>
       </AnimatePresence>
       
       <Row>
         <AnimatePresence>
-          {open && (
-            <DifficultyButton
-              difficulty={difficulty}
-              onClick={onDifficultyChange}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1, transition: { delay: 0.0625 } }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.0625 }}
-            >
-              {Difficulties[difficulty].name}
-              <Stars>
-                {Difficulties[difficulty].stars >= 1 && <PiStarFill/>}
-                {Difficulties[difficulty].stars >= 2 && <PiStarFill/>}
-                {Difficulties[difficulty].stars >= 3 && <PiStarFill/>}
-                {Difficulties[difficulty].stars >= 4 && <PiStarFill/>}
-              </Stars>
-            </DifficultyButton>
-          )}
+          <DifficultyButton
+            difficulty={difficulty}
+            onClick={onDifficultyChange}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1, transition: { delay: 0.0625 } }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.0625 }}
+          >
+            {Difficulties[difficulty].name}
+            <Stars>
+              {Difficulties[difficulty].stars >= 1 && <PiStarFill/>}
+              {Difficulties[difficulty].stars >= 2 && <PiStarFill/>}
+              {Difficulties[difficulty].stars >= 3 && <PiStarFill/>}
+              {Difficulties[difficulty].stars >= 4 && <PiStarFill/>}
+            </Stars>
+          </DifficultyButton>
         </AnimatePresence>
         
         {isSpectator || (
           <PlayButton
             onClick={onPlayClick}
-            initial={{ width: open ? '80px' : `${window.innerWidth - 32}px`, y: '100%', opacity: 0 }}
-            animate={{ y: 0, opacity: 1, width: open ? '80px' : `${window.innerWidth - 32}px` }}
+            initial={{ y: '100%', opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.125 }}
           >
             <PiPlayFill/>
@@ -151,10 +127,6 @@ export function HomeScreen() {
     </ScreenContainer>
   )
 }
-
-const Spacer = styled.div`
-  flex: 1;
-`
 
 const Stars = styled.div`
   display: flex;
@@ -173,12 +145,6 @@ const Row = styled(motion.div)`
   justify-content: flex-end;
   align-items: center;
   gap: 16px;
-`
-
-const Logo = styled(motion.img)`
-  width: 100%;
-  padding: 16px;
-  object-fit: contain;
 `
 
 const Tutorial = styled(motion.div)`
@@ -221,6 +187,7 @@ const DifficultyButton = styled(motion.button)<{ difficulty: Difficulty }>`
 
 const PlayButton = styled(motion.button)<{ fullWidth?: boolean }>`
   position: absolute;
+  width: 80px;
   bottom: 0;
   right: 0;
   ${props => props.fullWidth ? 'width: 100%;' : ''}
