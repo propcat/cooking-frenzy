@@ -22,16 +22,19 @@ export function TutorialPopup({ open, onClose }: Props) {
           <Content>
             <Tutorial/>
           </Content>
-          <ExitButton
+          <ExitButtonContainer
             initial={{ y: 'calc(100% + 37px)' }}
             animate={{ y: 0, transition: { delay: 0.4, duration: 0.2 } }}
             exit={{ y: 'calc(100% + 37px)' }}
-            onMouseUp={onClose} 
-            onTouchEnd={onClose}
           >
-            <IoCloseSharp/>
-            Close Tutorial
-          </ExitButton>
+            <ExitButton
+              onMouseUp={onClose} 
+              onTouchEnd={onClose}
+            >
+              <IoCloseSharp/>
+              Close Tutorial
+            </ExitButton>
+          </ExitButtonContainer>
         </Container>
       )}
     </AnimatePresence>
@@ -57,10 +60,17 @@ const Content = styled.div`
   color: #000000;
 `
 
-const ExitButton = styled(motion.button)`
+const ExitButtonContainer = styled(motion.div)`
   position: absolute;
+  width: 100%;
   bottom: 16px;
-  right: 16px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+`
+
+const ExitButton = styled.button`
   display: flex;
   flex-direction: row;
   justify-content: center;
