@@ -1,4 +1,5 @@
 import { GameData } from '@gamedata';
+import { useTouchThrottle } from '@hooks/useTouchThrottle';
 import { useWorkstationState } from '@hooks/useWorkstationState';
 import { ItemState } from '@mytypes/ItemState';
 import { Position } from '@mytypes/Position';
@@ -19,20 +20,7 @@ import styled from 'styled-components'
 import { Euler, Quaternion } from 'three';
 import { degToRad, radToDeg } from 'three/src/math/MathUtils';
 
-function useTouchThrottle(pause: number = 100) {
-  const [lastTouchTime, setLastTouchTime] = useState(0);
 
-  function onTouch(): boolean {
-    const now = Date.now();
-
-    if(now - lastTouchTime < pause) return false;
-
-    setLastTouchTime(now);
-    return true;
-  }
-
-  return onTouch;
-}
 
 export function InteractionButton() {
   const throwAngle = useThrowStore(state => state.angle);

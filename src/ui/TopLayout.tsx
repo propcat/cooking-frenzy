@@ -12,6 +12,7 @@ import { CiCircleQuestion } from "react-icons/ci";
 import { BsPatchQuestionFill } from "react-icons/bs";
 import { Tutorial } from './Tutorial';
 import { TutorialPopup } from './TutorialPopup';
+import { useTouchThrottle } from '@hooks/useTouchThrottle';
 
 interface Props {
   loaded?: boolean,
@@ -40,7 +41,11 @@ export function TopLayout({ loaded }: Props) {
     setTutorialOpen(false);
   }, [status, level])
 
+  const canToggleTutorial = useTouchThrottle();
+
   function onTutorialToggle() {
+    if(!canToggleTutorial()) return;
+
     setTutorialOpen(open => {
       if(open || status !== 'game' || !level?.loaded) return false;
 
@@ -52,7 +57,7 @@ export function TopLayout({ loaded }: Props) {
 
   return (
     <Container>
-      <Content onTouchEnd={onTutorialToggle}>
+      <Content onMouseUp={onTutorialToggle} onTouchEnd={onTutorialToggle}>
         {loaded && (
           <IconButton transparent={status !== 'game' || !level?.loaded}>
             <MdQuestionMark/>
